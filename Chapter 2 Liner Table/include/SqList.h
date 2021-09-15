@@ -16,5 +16,9 @@ struct SqList
 };
 
 bool ListInsert(SqList &L, int i, ElemType e);
+bool ListDelete(SqList &L, int i, ElemType &e);
+int  LocateElem(SqList L, ElemType e);
+void ListInit(SqList &L, int length);
+void ListPrint(SqList L);
 
 #endif
