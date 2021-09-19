@@ -137,3 +137,83 @@ int GetLinkLength(LinkList L)
     }
     return length;
 }
+
+DLinkList DLinkInit(int n)
+{
+    DLinkList DL = (DLinkList)malloc(sizeof(DNode));
+    DNode * s, * r = DL;
+    int i = 0;
+    while(i < n)
+    {
+        s = (DNode *)malloc(sizeof(DNode));
+        cin >> s->data;
+        r ->next = s;
+        s->prior = r;
+        s->next = NULL;
+        r = r->next;
+        i++;
+    }
+    return DL;
+}
+
+void DLInkPrint(DLinkList L)
+{
+    while(L->next != NULL)
+    {
+        cout << L->next->data << " ";
+        L = L->next;
+    }
+    cout << endl;
+}
+
+DNode * GetElemByNum(DLinkList L, int num)
+{
+    int i = 1;
+    DNode * p = L->next;
+    if(num == 0)
+    {
+        return L;
+    }
+    if(num < 0)
+    {
+        return NULL;
+    }
+    while(i < num && p != NULL)
+    {
+        p = p->next;
+        i++;
+    }
+    return p;
+}
+
+DNode * GetElemByVal(DLinkList L, ElemType e)
+{
+    DNode * p = L->next;
+    while(p->data != e)
+    {
+        p = p->next;
+    }
+    return p;
+}
+
+DNode * DLinkInsert(DLinkList & L, int num, ElemType e)
+{
+    DNode * location = GetElemByNum(L, num);
+    DNode * p = (DNode *)malloc(sizeof(DNode));
+    p->data = e;
+
+    p->next = location;
+    p->prior = location->prior;
+    location->prior->next = p;
+    location->prior = p;
+}
+
+void DLinkDelete(DLinkList & L, int num)
+{
+    DNode * location = GetElemByNum(L, num);
+
+    location->prior->next = location->next;
+    location->next->prior = location->prior;
+
+    free(location);
+}

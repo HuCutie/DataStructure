@@ -34,5 +34,14 @@ int main()
     LinkPrint(LL);
 
     cout << GetLinkLength(LL) << endl;
+
+    DLinkList DL = DLinkInit(5);
+    DLInkPrint(DL);
+
+    DNode * dp = DLinkInsert(DL, 2, 999);
+    DLInkPrint(DL);
+    DLinkDelete(DL, 2);
+    DLInkPrint(DL);
+
     return 0;
 }
