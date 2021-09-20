@@ -3,15 +3,17 @@
 LinkList LinkInit(int n)
 {
     LinkList L = (LinkList)malloc(sizeof(LNode));
-    LNode * s;
+    LNode * s, * r;
     int i = 0;
     L->next = NULL;
+    r = L;
     while(i < n)
     {
         s = (LNode *)malloc(sizeof(LNode));
         cin >> s->data;
-        s->next = L->next;
-        L->next = s;
+        r->next = s;
+        s->next = NULL;
+        r = s;
         i++;
     }
     return L;
