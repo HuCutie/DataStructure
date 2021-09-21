@@ -21,6 +21,15 @@ LinkList LinkInit(int n)
 
 void LinkPrint(LinkList L)
 {
+    if(L == NULL)
+    {
+        return ;
+    }
+    if(L->next == NULL)
+    {
+        cout << "Empty list." << endl;
+        return ;
+    }
     while(L->next != NULL)
     {
         cout << L->next->data << " ";
@@ -208,6 +217,8 @@ DNode * DLinkInsert(DLinkList & L, int num, ElemType e)
     p->prior = location->prior;
     location->prior->next = p;
     location->prior = p;
+
+    return p;
 }
 
 void DLinkDelete(DLinkList & L, int num)
