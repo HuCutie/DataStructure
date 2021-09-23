@@ -8,7 +8,7 @@ typedef struct LNode
 {
     ElemType data;
     struct LNode * next;
-}LNode, *LinkList;
+}LNode, * LinkList;
 
 LinkList LinkInit(int n);
 void LinkPrint(LinkList L);
@@ -23,11 +23,12 @@ int GetLinkLength(LinkList L);
 typedef struct DNode
 {
     ElemType data;
+    int freq = 0;;
     DNode * prior, * next;
 }DNode, * DLinkList;
 
 DLinkList DLinkInit(int n);
-void DLInkPrint(DLinkList L);
+void DLinkPrint(DLinkList L);
 DNode * GetElemByNum(DLinkList L, int num);
 DNode * GetElemByVal(DLinkList L, ElemType e);
 DNode * DLinkInsert(DLinkList & L, int num, ElemType e);

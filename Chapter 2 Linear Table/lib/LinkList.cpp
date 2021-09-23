@@ -210,7 +210,7 @@ DLinkList DLinkInit(int n)
     return DL;
 }
 
-void DLInkPrint(DLinkList L)
+void DLinkPrint(DLinkList L)
 {
     while(L->next != NULL)
     {
