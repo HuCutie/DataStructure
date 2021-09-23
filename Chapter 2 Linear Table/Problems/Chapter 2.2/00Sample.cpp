@@ -4,7 +4,6 @@ int main()
 {
     LinkList L = LinkInit(5);
     LinkPrint(L);
-
     
     LinkPrint(L);
     return 0;

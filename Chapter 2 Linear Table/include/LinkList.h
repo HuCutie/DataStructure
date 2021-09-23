@@ -32,3 +32,11 @@ DNode * GetElemByNum(DLinkList L, int num);
 DNode * GetElemByVal(DLinkList L, ElemType e);
 DNode * DLinkInsert(DLinkList & L, int num, ElemType e);
 void DLinkDelete(DLinkList & L, int num);
+
+typedef struct CDNode
+{
+    ElemType data;
+    CDNode * prior, * next;
+}CDNode, * CDLinkList;
+
+CDLinkList CDLinkInit(int n);

@@ -19,10 +19,32 @@ LinkList LinkInit(int n)
     return L;
 }
 
+LinkList CLinkInit(int n)
+{
+    LinkList L = (LinkList)malloc(sizeof(LNode));
+    LNode * s, * r;
+    int i = 0;
+    L->next = NULL;
+    r = L;
+    while(i < n)
+    {
+        s = (LNode *)malloc(sizeof(LNode));
+        cin >> s->data;
+
+        r->next = s;
+        s->next = L;
+        r = r->next;
+
+        i++;
+    }
+    return L;
+}
+
 void LinkPrint(LinkList L)
 {
     if(L == NULL)
     {
+        cout << "NULL." << endl;
         return ;
     }
     if(L->next == NULL)
@@ -34,6 +56,27 @@ void LinkPrint(LinkList L)
     {
         cout << L->next->data << " ";
         L = L->next;
+    }
+    cout << endl;
+}
+
+void CLinkPrint(LinkList L)
+{
+    LNode * p = L;
+    if(L == NULL)
+    {
+        cout << "NULL." << endl;
+        return ;
+    }
+    if(L->next == NULL)
+    {
+        cout << "Empty list." << endl;
+        return ;
+    }
+    while(p->next != L)
+    {
+        cout << p->next->data << " ";
+        p = p->next;
     }
     cout << endl;
 }
@@ -229,4 +272,26 @@ void DLinkDelete(DLinkList & L, int num)
     location->next->prior = location->prior;
 
     free(location);
+}
+
+CDLinkList CDLinkInit(int n)
+{
+    CDLinkList CDL = (CDNode *)malloc(sizeof(CDNode));
+    CDNode * p = CDL;
+    CDNode * s;
+    int i = 0;
+    while(i < n)
+    {
+        s = (CDNode *)malloc(sizeof(CDNode));
+        cin >> s->data;
+
+        p->next = s;
+        s->prior = p;
+        p = p->next;
+        p->next = CDL;
+        CDL->prior = s;
+
+        i++;
+    }
+    return CDL;
 }

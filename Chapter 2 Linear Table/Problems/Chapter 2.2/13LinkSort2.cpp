@@ -1,27 +1,42 @@
 #include "C:\MyProjects\Visual Studio Code Workspace\DataStructure\Chapter 2 Linear Table\lib\LinkList.cpp"
 
-LinkList LinkSort2(LinkList & L1, LinkList & L2)
+void LinkSort2(LinkList & L1, LinkList & L2)
 {
-    LNode * L = (LNode *)malloc(sizeof(LNode));
-    LNode * p, * q;
     LNode * l1 = L1->next, * l2 = L2->next;
+    LNode * r;
 
+    L1->next = NULL;
     while(l1 != NULL && l2 != NULL)
     {
-        p = L;
-        if(l1->data > l2->data)
+        if(l1->data < l2->data)
         {
-            q = l1;
-            l1 = l1->next;
-            q->next = p->next;
+            r = l1->next;
+            l1->next = L1->next;
+            L1->next = l1;
+            l1 = r;
         }
         else
         {
-
+            r = l2->next;
+            l2->next = L1->next;
+            L1->next = l2;
+            l2 = r;
         }
     }
 
-    return L;
+    if(l1 != NULL)
+    {
+        l2 = l1;
+    }
+    while(l2 != NULL)
+    {
+        r = l2->next;
+        l2->next = L1->next;
+        L1->next = l2;
+        l2 = r;
+    }
+
+    free(L2);
 }
 
 int main()
@@ -31,8 +46,8 @@ int main()
     LinkList L2 = LinkInit(5);
     LinkPrint(L2);
 
-    LinkList L = LinkSort2(L1, L2);
-    LinkPrint(L);
+    LinkSort2(L1, L2);
+    LinkPrint(L1);
 
     return 0;
 }
