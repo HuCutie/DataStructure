@@ -108,35 +108,32 @@ BiTree CreatBiTreeByPre()
 
 void PreRec(BiTree T)
 {
-    if(T == NULL)
+    if(T != NULL)
     {
-        return ;
+        cout << T->data << " ";
+        PreRec(T->lchild);
+        PreRec(T->rchild);
     }
-    cout << T->data << " ";
-    PreRec(T->lchild);
-    PreRec(T->rchild);
 }
 
 void MidRec(BiTree T)
 {
-    if(T == NULL)
+    if(T != NULL)
     {
-        return ;
+        MidRec(T->lchild);
+        cout << T->data << " ";
+        MidRec(T->rchild);
     }
-    MidRec(T->lchild);
-    cout << T->data << " ";
-    MidRec(T->rchild);
 }
 
 void PosRec(BiTree T)
 {
-    if(T == NULL)
+    if(T != NULL)
     {
-        return ;
+        PosRec(T->lchild);
+        PosRec(T->rchild);
+        cout << T->data << " ";
     }
-    PosRec(T->lchild);
-    PosRec(T->rchild);
-    cout << T->data << " ";
 }
 
 void Pre(BiTree T, SqStack S)
