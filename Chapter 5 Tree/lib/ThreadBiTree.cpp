@@ -1,6 +1,26 @@
 #include "C:\MyProjects\Visual Studio Code Workspace\DataStructure\Chapter 5 Tree\include\ThreadBiTree.h"
 
-void InThread(ThreadBiTree & T, ThreadNode * pre)
+ThreadBiTree CreatThreadBiTreeByPre()
+{
+    ThreadBiTree T = (ThreadNode *)malloc(sizeof(ThreadNode));
+    ElemType t;
+
+    cin >> t;
+    if(t == '#')
+    {
+        return NULL;
+    }
+    else
+    {
+        T->data = t;
+        T->lchild = CreatThreadBiTreeByPre();
+        T->rchild = CreatThreadBiTreeByPre();
+    }
+
+    return T;
+}
+
+void InThread(ThreadBiTree & T, ThreadNode * & pre)
 {
     if(T != NULL)
     {
@@ -10,7 +30,7 @@ void InThread(ThreadBiTree & T, ThreadNode * pre)
             T->lchild = pre;
             T->ltag = 1;
         }
-        if(pre != NULL &&pre->rchild == NULL)
+        if(pre != NULL && pre->rchild == NULL)
         {
             pre->rchild = T;
             pre->rtag = 1;
@@ -20,7 +40,7 @@ void InThread(ThreadBiTree & T, ThreadNode * pre)
     }
 }
 
-void CreateInThread(ThreadBiTree T)
+void CreateInThread(ThreadBiTree & T)
 {
     ThreadNode * pre = NULL;
     if(T != NULL)

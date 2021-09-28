@@ -1,8 +1,24 @@
 #include "C:\MyProjects\Visual Studio Code Workspace\DataStructure\Chapter 5 Tree\lib\BiTree.cpp"
 
-void SearchX(BiTree T, SqStack S, ElemType x)
+bool SearchX(BiTree T, ElemType x)
 {
-    
+    if(T == NULL)
+    {
+        return false;
+    }
+
+    if(T->data == x)
+    {
+        return true;
+    }
+
+    if(SearchX(T->lchild, x) || SearchX(T->rchild, x))
+    {
+        cout << T->data << " ";
+        return true;
+    }
+
+    return false;
 }
 
 int main()
@@ -11,7 +27,10 @@ int main()
 	T = CreatBiTreeByPre();
 	SqStack S;
 
-	PreRec(T);
+	PosRec(T);
+	cout << endl;
+
+    SearchX(T, 'e');
 	cout << endl;
     return 0;
 }

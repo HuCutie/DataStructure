@@ -40,7 +40,7 @@ bool GetTop(SqStack S, BiTNode * & p)
 {
     if(S.top == -1)
     {
-        cout << "Stack is full." << endl;
+        cout << "Stack is empty." << endl;
         return false;
     }
     p = S.data[S.top];
