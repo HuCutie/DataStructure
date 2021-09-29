@@ -46,8 +46,8 @@ void CreateInThread(ThreadBiTree & T)
     if(T != NULL)
     {
         InThread(T, pre);
-        pre->lchild = NULL;
-        pre->ltag = 1;
+        pre->rchild = NULL;
+        pre->rtag = 1;
     }
 }
 
