@@ -16,7 +16,7 @@ void Post(BiTree T, SqStack S)
         else
         {
             GetTop(S, p);
-            if(p->rchild == NULL && p != pre)
+            if(p->rchild != NULL && p != pre)
             {
                 p = p->rchild;
             }
