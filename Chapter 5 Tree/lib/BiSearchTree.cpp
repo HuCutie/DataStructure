@@ -46,19 +46,95 @@ void Insert(BSTree & T, ElemType x)
     }
 }
 
-void Delete(BSTree & T, ElemType x)
+BSNode * Parent(BSTree T, BSNode * p)
+{
+    if(T->lchild == p || T->rchild == p)
+    {
+        return T;
+    }
+    else if(T->data < p->data)
+    {
+        return Parent(T->rchild, p);
+    }
+    else if(T->data > p->data)
+    {
+        return Parent(T->lchild, p);
+    }
+    return NULL;
+}
+
+bool Delete(BSTree & T, ElemType x)
 {
     BSNode * p = Search(T, x);
+    BSNode * q, * r;
     if(p == NULL)
     {
         cout << "The node is not in the tree." << endl;
-        return ;
+        return false;
     }
 
     if(p->lchild == NULL && p->rchild == NULL)
     {
-        ;
+        q = Parent(T, p);
+        if(q->lchild == p)
+        {
+            q->lchild = NULL;
+        }
+        if(q->rchild == p)
+        {
+            q->rchild = NULL;
+        }
     }
+    else if((p->lchild != NULL && p->rchild == NULL) || (p->lchild == NULL && p->rchild != NULL))
+    {
+        q = Parent(T, p);
+        r = p->lchild != NULL ? p->lchild : p->rchild;
+        if(p->data < q->data)
+        {
+            q->lchild = r;
+        }
+        if(p->data > q->data)
+        {
+            q->rchild = r;
+        }
+    }
+    else
+    {
+        q = Parent(T, p);
+        r = p->lchild;
+
+        if(r->rchild == NULL)
+        {
+            q->lchild = r;
+            r->rchild = p->rchild;
+        }
+        else
+        {
+            BSNode * r1 = r;
+            BSNode * r1Parent = r;
+            while(r1->rchild != NULL)
+            {
+                r1Parent = r1;
+                r1 = r1->rchild;
+            }
+
+            r1Parent->rchild = r1->lchild;
+            r1->lchild = r;
+            r1->rchild = p->rchild;
+
+            if(q->lchild == p)
+            {
+                q->lchild = r1;
+            }
+            if(q->rchild == p)
+            {
+                q->rchild = r1;
+            }
+        }
+    }
+
+    free(p);
+    return true;
 }
 
 BSTree Create(int n)
@@ -82,8 +158,8 @@ void Print(BSTree T)
     BSNode * p = T;
     if(p != NULL)
     {
-        cout << p->data << " ";
         Print(p->lchild);
+        cout << p->data << " ";
         Print(p->rchild);
     }
 }
@@ -91,17 +167,19 @@ void Print(BSTree T)
 int main()
 {
     BSNode * p;
-    BSTree T = Create(6);
-    Print(T);
-    cout << endl;
-    p = Search(T, 5);
-    cout << p << "  " << p->data << endl;
-
-    Insert(T, 10);
+    BSTree T = Create(16);
     Print(T);
     cout << endl;
 
-    Insert(T, 0);
+    Delete(T, 50);
+    Print(T);
+    cout << endl;
+
+    Delete(T, 58);
+    Print(T);
+    cout << endl;
+
+    Delete(T, 47);
     Print(T);
     cout << endl;
 
