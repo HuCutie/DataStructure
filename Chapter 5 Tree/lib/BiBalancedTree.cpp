@@ -241,30 +241,3 @@ bool Delete(BBTree & T, ElemType x)
     free(p);
     return true;
 }
-
-int main()
-{
-    BBTree T = Create(6);
-    BBNode * p;
-
-    Print(T);
-    cout << endl;
-
-    Insert(T, 0);
-    Print(T);
-    cout << endl;
-
-    Insert(T, 10);
-    Print(T);
-    cout << endl;
-
-    Delete(T, 0);
-    Print(T);
-    cout << endl;
-
-    Delete(T, 10);
-    Print(T);
-    cout << endl;
-
-    return 0;
-}
