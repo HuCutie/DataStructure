@@ -163,25 +163,3 @@ void Print(BSTree T)
         Print(p->rchild);
     }
 }
-
-int main()
-{
-    BSNode * p;
-    BSTree T = Create(16);
-    Print(T);
-    cout << endl;
-
-    Delete(T, 50);
-    Print(T);
-    cout << endl;
-
-    Delete(T, 58);
-    Print(T);
-    cout << endl;
-
-    Delete(T, 47);
-    Print(T);
-    cout << endl;
-
-    return 0;
-}
