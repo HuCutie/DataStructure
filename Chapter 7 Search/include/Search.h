@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#define ElemType int
+typedef unsigned long long ElemType;
 
 typedef struct
 {

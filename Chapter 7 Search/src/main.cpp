@@ -1,51 +1,78 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <Windows.h>
-#include <process.h>
+#include <iostream>
+#include <thread>
+#include <vector>
+#include <math.h>
 
-struct MyStruct
-{
-    int *pfindstart;//要查找的首地址
-    int length;//限定长度，从首地址开始
-    int num;//要查找的元素
-    int bh;//那个线程找到的
-    int *pfind;
-};
+typedef unsigned long long ElemType;
 
-void find(void *p)
+std::vector<ElemType> arr;
+ElemType key;
+bool flag = false;
+
+void Init(int n)
 {
-    struct MyStruct *pstruct = (struct MyStruct *)p;
-    //内存遍历，从地址开始累加100个元素的大小，遍历所有元素
-    for (int *px = pstruct->pfindstart; px < pstruct->pfindstart + 100;px++)
+    for (ElemType i = 0; i < n; i++)
     {
-        if (*px==pstruct->num)
+        arr.push_back(i);
+    }
+}
+
+void search(ElemType p, ElemType q)
+{
+    for (auto i = p; i <= q && i < arr.size(); i++)
+    {
+        if (arr[i] == key)
         {
-            printf("线程%d找到：%d,位置：%p\n",pstruct->bh, *px, px);
-            return;
+            std::cout << "Element found in the vector \n";
+            return ;
         }
     }
-    printf("%d线程没有找到\n",pstruct->bh);
-
 }
 
 int main()
 {
-    int a[1000];//找783
-    for (int i = 0; i < 1000;i++)
+    ElemType block_start = 0, block_end, n;
+    n = 100000000;
+    key = 10000;
+
+    Init(n);
+
+    unsigned long const length = arr.size();
+
+    if (!length)
     {
-        a[i] = i;//数组初始化
+        return 0;
     }
 
-    for (int i = 0; i < 10;i++)//创建10个线程并行查找
+    const ElemType hardware_threads = std::thread::hardware_concurrency();
+    const ElemType num_threads = hardware_threads;
+    const ElemType block_size = length / num_threads;
+
+    std::cout << "Number of threads created : " << num_threads << "\n";
+
+    std::vector<std::thread> threads(num_threads);
+    block_start = 0;
+    for (ElemType i = 0; i < num_threads; ++i)
     {
-        struct MyStruct threaddata;
-        threaddata.pfindstart = a + i * 100;
-        threaddata.length = 100;
-        threaddata.bh = i;
-        threaddata.num =345;
-        threaddata.pfind = NULL;
-        _beginthread(find, 0, &threaddata);
-        Sleep(30);//线程创建要时间，要给一个缓冲时间
+        block_end = block_start;
+        block_end = block_end + block_size;
+
+        threads[i] = std::thread(search, block_start, block_end);
+        block_start = block_end + 1;
     }
+
+    for (auto &entry : threads)
+    {
+        if (entry.joinable())
+        {
+            entry.join(); //join is used to make sure that every thread will execute before the main() ends
+        }            
+    }
+
+    if (flag)
+    {
+        std::cout << "Element not present in the vector \n";
+    }
+
     return 0;
 }
