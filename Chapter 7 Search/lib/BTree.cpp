@@ -29,6 +29,7 @@ void Split(BTree & T)
     int num = p1->num;
     int split = num / 2;
     
+    
 }
 
 void Insert(BTree & T, ElemType x)

@@ -32,13 +32,13 @@ BBNode * RR(BBNode * p)
 
 BBNode * LR(BBNode * p)
 {
-    p->lchild = (p->lchild);
+    p->lchild = RR(p->lchild);
     return LL(p);
 }
 
 BBNode * RL(BBNode * p)
 {
-    p->rchild = (p->rchild);
+    p->rchild = LL(p->rchild);
     return RR(p);
 }
 
