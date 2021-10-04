@@ -28,5 +28,5 @@ typedef struct
 typedef struct CSNode
 {
     ElemType data;
-    CSNode * firstChile, * nextSibling;
+    CSNode * firstChild, * nextSibling;
 }CSNode, * CSTree;
