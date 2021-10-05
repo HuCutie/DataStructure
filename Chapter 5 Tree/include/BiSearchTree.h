@@ -8,4 +8,6 @@ typedef struct BSNode
 {
     ElemType data;
     BSNode * lchild, * rchild;
+
+    int count = 0;
 }BSNode, * BSTree;
