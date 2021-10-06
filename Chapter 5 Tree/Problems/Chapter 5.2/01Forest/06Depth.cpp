@@ -2,19 +2,17 @@
 
 int Depth(CSTree T)
 {
-    int depth = 0;
-
     if(T != NULL)
     {
-        if(T->firstChild != NULL)
-        {
-            depth++;
-        }
-
         int l = Depth(T->firstChild);
         int r = Depth(T->nextSibling);
 
-        return depth += (l > r ? l : r);
+        if(l+1 > r)
+        {
+            return l+1;
+        }
+
+        return r;
     }
     return 0;
 }
@@ -27,7 +25,7 @@ int main()
     Pre(T);
     cout << endl;
 
-    cout << Depth(T) + 1 << endl;
+    cout << Depth(T) << endl;
 
     return 0;
 }

@@ -1,6 +1,6 @@
 #include "C:\MyProjects\Visual Studio Code Workspace\DataStructure\Chapter 5 Tree\lib\BiTree.cpp"
 
-    ElemType p;
+ElemType p;
 bool isBiSearchTree(BiTree T)
 {
     if(T == NULL)
