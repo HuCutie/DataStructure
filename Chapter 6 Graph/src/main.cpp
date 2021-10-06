@@ -4,8 +4,10 @@ int main(int argc, char *argv[])
 {
 	MGraph G;
 
-	G = CreateNet();
+	G = CreateUDG();
 	Print(G);
+
+	BFSTravel(G);
 
 	return 0;
 }
