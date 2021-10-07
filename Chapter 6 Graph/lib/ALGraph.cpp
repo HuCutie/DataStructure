@@ -75,6 +75,50 @@ ALGraph Create()
     return G;
 }
 
+int FirstNeighbor(ALGraph G, VertexType x)
+{
+    ArcNode * p;
+    int i;
+
+    i = GetIndexByData(G, x);
+
+    if(i == -1)
+    {
+        cout << "The vertex is not in the graph." << endl;
+        return -1;
+    }
+
+    p = G.vertices[i].first;
+    if(p != NULL)
+    {
+        return p->adjvex;
+    }
+
+    return -1;
+}
+
+int NextNeighbor(ALGraph G, VertexType a, VertexType b)
+{
+    ArcNode * p;
+    int i, j;
+
+    i = GetIndexByData(G, a);
+    j = GetIndexByData(G, b);
+
+    if(i == -1 || j == -1)
+    {
+        cout << "Wrong node." << endl;
+        return -1;
+    }
+
+    p = G.vertices[i].first->next;
+    if(p != NULL)
+    {
+        return p->adjvex;
+    }
+
+    return -1;
+}
 
 bool visitedL[MaxVextexNum];
 void InitVisited()
@@ -95,10 +139,9 @@ void DFS(ALGraph G, int index)
     p = G.vertices[index].first;
     while(p != NULL)
     {
-        if(!visitedL[GetIndexByData(G, G.vertices[p->adjvex].data)])
+        if(!visitedL[p->adjvex])
         {
-            cout << G.vertices[p->adjvex].data << " ";
-            visitedL[p->adjvex] = true;
+            DFS(G, p->adjvex);
         }
         p = p->next;
     }
@@ -144,33 +187,40 @@ void DFS(ALGraph G, SqStack S, int index)
     }
 }
 
-void BFS(ALGraph G, SqQueue Q, int index)
+void BFSTravel(ALGraph G)
 {
     ArcNode * p;
+    SqQueue Q;
 
     InitVisited();
+    InitQueue(Q);
 
-    cout << G.vertices[index].data << " ";
-    visitedL[index] = true;
-
-    EnQueue(Q, index);
-
-    while(!QueueEmpty(Q))
+    for(int i = 0; i < G.VexNum; i++)
     {
-        DeQueue(Q, index);
-        p = G.vertices[index].first;
-
-        while(p != NULL)
+        if(!visitedL[i])
         {
-            if(!visitedL[p->adjvex])
+            visitedL[i] = true;
+            EnQueue(Q, i);
+
+            cout << G.vertices[i].data << " ";
+            while(!QueueEmpty(Q))
             {
-                cout << G.vertices[p->adjvex].data << " ";
-                visitedL[p->adjvex] = true;
+                DeQueue(Q, i);
+                p = G.vertices[i].first;
 
-                EnQueue(Q, p->adjvex);
+                while(p != NULL)
+                {
+                    if(!visitedL[p->adjvex])
+                    {
+                        visitedL[p->adjvex] = true;
+                        cout << G.vertices[p->adjvex].data << " ";
+
+                        EnQueue(Q, p->adjvex);
+                    }
+
+                    p = p->next;
+                }
             }
-
-            p =p->next;
         }
     }
 }
