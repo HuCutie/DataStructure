@@ -148,6 +148,8 @@ void BFS(ALGraph G, SqQueue Q, int index)
 {
     ArcNode * p;
 
+    InitVisited();
+
     cout << G.vertices[index].data << " ";
     visitedL[index] = true;
 
@@ -160,10 +162,10 @@ void BFS(ALGraph G, SqQueue Q, int index)
 
         while(p != NULL)
         {
-            if(!visited[p->adjvex])
+            if(!visitedL[p->adjvex])
             {
                 cout << G.vertices[p->adjvex].data << " ";
-                visited[p->adjvex] = true;
+                visitedL[p->adjvex] = true;
 
                 EnQueue(Q, p->adjvex);
             }
