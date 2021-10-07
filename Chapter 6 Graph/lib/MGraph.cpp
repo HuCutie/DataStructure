@@ -1,18 +1,5 @@
 #include "C:\MyProjects\Visual Studio Code Workspace\DataStructure\Chapter 6 Graph\include\MGraph.h"
-
-#define MaxSize 100
-
-typedef struct
-{
-    VertexType data[MaxSize];
-    int top;
-}SqStack;
-
-typedef struct
-{
-    VertexType data[MaxSize];
-    int front, rear;
-}SqQueue;
+#include "C:\MyProjects\Visual Studio Code Workspace\DataStructure\Chapter 6 Graph\lib\StackAndQueue.cpp"
 
 void InitGraph(MGraph & G)
 {
@@ -447,113 +434,25 @@ void Multiply(MGraph & G, int n)
     }
 }
 
-void InitStack(SqStack & S)
-{
-    S.top = -1;
-}
-
-bool StackEmpty(SqStack S)
-{
-    if(S.top == -1)
-    {
-        return true;
-    }
-    return false;
-}
-
-bool Push(SqStack & S, VertexType p)
-{
-    if(S.top == MaxSize - 1)
-    {
-        cout << "Stack is full." << endl;
-        return false;
-    }
-    S.data[++S.top] = p;
-    return true;
-}
-
-bool Pop(SqStack & S, VertexType & p)
-{
-    if(S.top == -1)
-    {
-        cout << "Stack is full." << endl;
-        return false;
-    }
-    p = S.data[S.top--];
-    return true;
-}
-
-bool GetTop(SqStack S, VertexType & p)
-{
-    if(S.top == -1)
-    {
-        cout << "Stack is empty." << endl;
-        return false;
-    }
-    p = S.data[S.top];
-    return true;
-}
-
-void InitQueue(SqQueue & Q)
-{
-    Q.front = 0;
-    Q.rear = 0;
-}
-
-bool QueueEmpty(SqQueue Q)
-{
-    if(Q.rear == Q.front)
-    {
-        return true;
-    }
-    return false;
-}
-
-bool EnQueue(SqQueue & Q, VertexType p)
-{
-    if((Q.rear + 1) % MaxSize == Q.front)
-    {
-        cout << "Queue is full." << endl;
-        return false;
-    }
-    Q.data[Q.rear] = p;
-    Q.rear = (Q.rear + 1) % MaxSize;
-    return true;
-}
-
-bool DeQueue(SqQueue & Q, VertexType & p)
-{
-    if(Q.rear == Q.front)
-    {
-        cout << "Queue is empty." << endl;
-        return false;
-    }
-    p = Q.data[Q.front];
-    Q.front = (Q.front + 1) % MaxSize;
-    return true;
-}
-
 bool visited[MaxVertexNum];
 void BFS(MGraph G, SqQueue & Q, int i)
 {
-    VertexType v;
-
     cout << G.Vex[i] << " ";
     visited[i] = true;
 
-    EnQueue(Q, G.Vex[i]);
+    EnQueue(Q, i);
 
     while(!QueueEmpty(Q))
     {
-        DeQueue(Q, v);
-        for(int j = GetIndex(G, FirstNeighbor(G, v)); j >= 0; j = GetIndex(G, NextNeighbor(G, v, G.Vex[j])))
+        DeQueue(Q, i);
+        for(int j = FirstNeighbor(G, G.Vex[i]); j >= 0; j = NextNeighbor(G, G.Vex[i], G.Vex[j]))
         {
-            if(!visited[G.Vex[j]])
+            if(!visited[j])
             {
                 cout << G.Vex[j] << " ";
-                visited[G.Vex[j]] = true;
+                visited[j] = true;
 
-                EnQueue(Q, G.Vex[j]);
+                EnQueue(Q, j);
             }
         }
     }
@@ -580,7 +479,6 @@ void BFSTravel(MGraph G)
 
 void MinDistanceByBFS(MGraph G, SqQueue Q, int * dis, int i)
 {
-    VertexType temp;
     dis = (int *)malloc(sizeof(int) * G.VexNum);
 
     for(int j = 0; j < G.VexNum; i++)
@@ -592,18 +490,18 @@ void MinDistanceByBFS(MGraph G, SqQueue Q, int * dis, int i)
     visited[i] = true;
     dis[i] = 0;
 
-    EnQueue(Q, G.Vex[i]);
+    EnQueue(Q, i);
     while(!QueueEmpty(Q))
     {
-        DeQueue(Q, temp);
+        DeQueue(Q, i);
 
-        for(int j = GetIndex(G, FirstNeighbor(G, temp)); j >= 0; j = GetIndex(G, NextNeighbor(G, temp, G.Vex[j])))
+        for(int j = FirstNeighbor(G, G.Vex[i]); j >= 0; j = NextNeighbor(G, G.Vex[i], G.Vex[j]))
         {
             if(!visited[j])
             {
                 visited[j] = true;
                 dis[j] = dis[i]+1;
-                EnQueue(Q, G.Vex[j]);
+                EnQueue(Q, j);
             }
         }
     }
@@ -611,12 +509,10 @@ void MinDistanceByBFS(MGraph G, SqQueue Q, int * dis, int i)
 
 void DFS(MGraph G, int i)
 {
-    VertexType temp;
-
     cout << G.Vex[i] << " ";
     visited[i] = true;
 
-    for (int j = GetIndex(G, FirstNeighbor(G, temp)); j >= 0; j = GetIndex(G, NextNeighbor(G, temp, G.Vex[j])))
+    for (int j = FirstNeighbor(G, G.Vex[i]); j >= 0; j = NextNeighbor(G, G.Vex[i], G.Vex[j]))
     {
         if (!visited[j])
         {
@@ -625,7 +521,7 @@ void DFS(MGraph G, int i)
     }
 }
 
-void DFSTravle(MGraph G, int i)
+void DFSTravle(MGraph G)
 {
     for(int i = 0; i < G.VexNum; i++)
     {
@@ -637,6 +533,35 @@ void DFSTravle(MGraph G, int i)
         if(!visited[i])
         {
             DFS(G, i);
+        }
+    }
+}
+
+void DFS(MGraph G, SqStack S, int index)
+{
+    int temp;
+    InitStack(S);
+    
+    for(int i = 0; i < G.VexNum; i++)
+    {
+        visited[i] = false;
+    }
+
+    Push(S, index);
+    visited[index] = true;
+
+    while(!StackEmpty(S))
+    {
+        Pop(S, temp);
+        cout << G.Vex[temp] << " ";
+
+        for (int j = FirstNeighbor(G, G.Vex[index]); j >= 0; j = NextNeighbor(G, G.Vex[index], G.Vex[j]))
+        {
+            if(!visited[j])
+            {
+                Push(S, j);
+                visited[j] = true;
+            }
         }
     }
 }

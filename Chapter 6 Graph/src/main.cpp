@@ -3,11 +3,18 @@
 int main(int argc, char *argv[])
 {
 	MGraph G;
+	SqStack S;
 
 	G = CreateUDG();
 	Print(G);
 
+	DFSTravle(G);
+	cout << endl;
+
 	BFSTravel(G);
+	cout << endl;
+
+	DFS(G, S, 0);
 
 	return 0;
 }
