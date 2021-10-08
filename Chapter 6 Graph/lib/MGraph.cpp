@@ -251,7 +251,6 @@ void DeleteVertex(MGraph & G, VertexType x)
         cout << "The vertex is not in the graph." << endl;
         return ;
     }
-
     
     for(int j = i + 1; j < G.VexNum; j++)
     {
@@ -267,7 +266,9 @@ void DeleteVertex(MGraph & G, VertexType x)
             G.ArcNum--;
         }
     }
+
     G.VexNum--;
+    G.ArcNum++;
 }
 
 void AddEdge(MGraph & G, VertexType a, VertexType b)
@@ -277,6 +278,7 @@ void AddEdge(MGraph & G, VertexType a, VertexType b)
 
     i = GetIndex(G, a);
     j = GetIndex(G, b);
+
     if(i == -1 || j == -1)
     {
         cout << "The vertex is not in the graph." << endl;
@@ -303,6 +305,7 @@ void RemoveEdge(MGraph & G, VertexType a, VertexType b)
 
     i = GetIndex(G, a);
     j = GetIndex(G, b);
+
     if(i == -1 || j == -1)
     {
         cout << "The vertex is not in the graph." << endl;
@@ -326,6 +329,7 @@ int FirstNeighbor(MGraph G, VertexType x)
     int i;
 
     i = GetIndex(G, x);
+
     if(i == -1)
     {
         cout << "The vertex is not in the graph." << endl;
@@ -349,6 +353,7 @@ int NextNeighbor(MGraph G, VertexType a, VertexType b)
 
     i = GetIndex(G, a);
     j = GetIndex(G, b);
+
     if(i == -1 || j == -1)
     {
         cout << "The vertex is not in the graph." << endl;
@@ -372,6 +377,7 @@ EdgeType GetEdgeValue(MGraph G, VertexType a, VertexType b)
 
     i = GetIndex(G, a);
     j = GetIndex(G, b);
+
     if(i == -1 || j == -1)
     {
         cout << "The vertex is not in the graph." << endl;
@@ -396,6 +402,7 @@ void SetEdgeValue(MGraph & G, VertexType a, VertexType b)
 
     i = GetIndex(G, a);
     j = GetIndex(G, b);
+
     if(i == -1 || j == -1)
     {
         cout << "The vertex is not in the graph." << endl;
@@ -437,14 +444,14 @@ void Multiply(MGraph & G, int n)
 bool visited[MaxVertexNum];
 void BFS(MGraph G, SqQueue & Q, int i)
 {
-    cout << G.Vex[i] << " ";
-    visited[i] = true;
-
     EnQueue(Q, i);
+    visited[i] = true;
 
     while(!QueueEmpty(Q))
     {
         DeQueue(Q, i);
+        cout << G.Vex[i] << " ";
+
         for(int j = FirstNeighbor(G, G.Vex[i]); j >= 0; j = NextNeighbor(G, G.Vex[i], G.Vex[j]))
         {
             if(!visited[j])
@@ -468,6 +475,7 @@ void BFSTravel(MGraph G)
     }
 
     InitQueue(Q);
+
     for(int i = 0; i < G.VexNum; i++)
     {
         if(!visited[i])

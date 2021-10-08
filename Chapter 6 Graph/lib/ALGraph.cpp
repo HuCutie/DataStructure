@@ -1,7 +1,6 @@
 #include "C:\MyProjects\Visual Studio Code Workspace\DataStructure\Chapter 6 Graph\include\ALGraph.h"
 #include "C:\MyProjects\Visual Studio Code Workspace\DataStructure\Chapter 6 Graph\lib\StackAndQueue.cpp"
 
-
 int GetIndexByData(ALGraph G, VertexType x)
 {
     for(int i = 0; i < G.VexNum; i++)
@@ -202,12 +201,12 @@ void BFSTravel(ALGraph G)
             visitedL[i] = true;
             EnQueue(Q, i);
 
-            cout << G.vertices[i].data << " ";
             while(!QueueEmpty(Q))
             {
                 DeQueue(Q, i);
-                p = G.vertices[i].first;
+                cout << G.vertices[i].data << " ";
 
+                p = G.vertices[i].first;
                 while(p != NULL)
                 {
                     if(!visitedL[p->adjvex])
