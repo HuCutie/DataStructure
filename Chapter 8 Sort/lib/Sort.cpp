@@ -222,6 +222,134 @@ void Radix(SeqList & L)
     free(temp);
 }
 
+int Partition(SeqList & L, int low, int high)
+{
+    ElemType pivot = L.data[low];
+
+    while(low < high)
+    {
+        while(low < high && L.data[high] >= pivot)
+        {
+            high--;
+        }
+        L.data[low] = L.data[high];
+
+        while(low < high && L.data[low] <= pivot)
+        {
+            low++;
+        }
+        L.data[high] = L.data[low];
+    }
+
+    L.data[low] = pivot;
+    return low;
+}
+
+void Quick(SeqList L, int low, int high)
+{
+    if(low < high)
+    {
+        int pivitPos = Partition(L, low, high);
+
+        Quick(L, low, pivitPos-1);
+        Quick(L, pivitPos+1, high);
+    }
+}
+
+void AdjustHeap(SeqList & L, int k, int len)
+{
+    L.data[0] = L.data[k];
+
+    for(int i = 2*k; i <= len; i *= 2)
+    {
+        if(i < len && L.data[i] < L.data[i+1])
+        {
+            i++;
+        }
+
+        if(L.data[0] >= L.data[i])
+        {
+            break;
+        }
+        else
+        {
+            L.data[k] = L.data[i];
+            k = i;
+        }
+    }
+
+    L.data[k] = L.data[0];
+}
+
+void BuildHeap(SeqList & L, int len)
+{
+    for(int i = len / 2; i > 0; i--)
+    {
+        AdjustHeap(L, i, len);
+    }
+}
+
+void Heap(SeqList & L)
+{
+    ElemType temp;
+
+    BuildHeap(L, L.length-1);
+
+    for(int i = L.length-1; i > 1; i--)
+    {
+        temp = L.data[1];
+        L.data[1] = L.data[i];
+        L.data[i] = temp;
+
+        AdjustHeap(L, 1, i-1);
+    }
+}
+
+ElemType * sup = (ElemType *)malloc(sizeof(ElemType) * 11);
+void Merging(SeqList & L, int low, int mid, int high)
+{
+    int i, j, k;
+
+    for(k = low; k <= high; k++)
+    {
+        sup[k] = L.data[k];
+    }
+
+    for(i = low, j = mid + 1, k = i; i <= mid && j <= high; k++)
+    {
+        if(sup[i] <= sup[j])
+        {
+            L.data[k] = sup[i++];
+        }
+        else
+        {
+            L.data[k] = sup[j++];
+        }
+    }
+
+    while(i <= mid)
+    {
+        L.data[k++] = sup[i++];
+    }
+    while(j <= high)
+    {
+        L.data[k++] = sup[j++];
+    }
+}
+
+void Merge(SeqList & L, int low, int high)
+{
+    if(low < high)
+    {
+        int mid = (low + high) / 2;
+
+        Merge(L, low, mid);
+        Merge(L, mid+1, high);
+
+        Merging(L, low, mid, high);
+    }
+}
+
 int main()
 {
     SeqList L;
@@ -229,7 +357,7 @@ int main()
     Init(L, 10);
     Print(L);
 
-    Radix(L);
+    Merge(L, 0, 9);
     Print(L);
 
     return 0;
