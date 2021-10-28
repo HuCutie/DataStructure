@@ -20,29 +20,21 @@ void measure(T &&func)
 void NumberAdd(unsigned long long start, unsigned long long end, unsigned long long & ans)
 {
 	int sum = 0;
-	for (unsigned long long i = start; i < end; i++)
+	for (unsigned long long i = start; i <= end; i++)
 	{
-		sum = sum++;
+		sum += i;
 	}
 	ans = sum;
 }
 
 int main()
 {
-	unsigned long long times = 5000000000;
+	unsigned long long times = 100;
 	measure([times]()
 			{
 				unsigned long long ans = 0;
 
-				unsigned long long h1 = times / 8;
-				unsigned long long h2 = times / 4;
-				unsigned long long h3 = h1 + h2;
-				unsigned long long h4 = times / 2;
-				unsigned long long h5 = h4 + h1;
-				unsigned long long h6 = h4 + h2;
-				unsigned long long h7 = h4 + h3;
-
-				NumberAdd(0, times, ref(ans));
+				NumberAdd(1, times, ref(ans));
 				cout << "result of single thread: " << ans << endl;
 			});
 
@@ -50,15 +42,7 @@ int main()
 			{
 				unsigned long long ans1 = 0, ans2 = 0;
 
-				unsigned long long h1 = times / 8;
-				unsigned long long h2 = times / 4;
-				unsigned long long h3 = h1 + h2;
-				unsigned long long h4 = times / 2;
-				unsigned long long h5 = h4 + h1;
-				unsigned long long h6 = h4 + h2;
-				unsigned long long h7 = h4 + h3;
-
-				thread t1 = thread(NumberAdd, 0, times / 2, ref(ans1));
+				thread t1 = thread(NumberAdd, 1, times / 2, ref(ans1));
 				thread t2 = thread(NumberAdd, times / 2, times, ref(ans2));
 
 				t1.join();
@@ -71,15 +55,7 @@ int main()
 			{
 				unsigned long long ans1 = 0, ans2 = 0, ans3 = 0, ans4 = 0;
 
-				unsigned long long h1 = times / 8;
-				unsigned long long h2 = times / 4;
-				unsigned long long h3 = h1 + h2;
-				unsigned long long h4 = times / 2;
-				unsigned long long h5 = h4 + h1;
-				unsigned long long h6 = h4 + h2;
-				unsigned long long h7 = h4 + h3;
-
-				thread t1 = thread(NumberAdd, 0, times / 4, ref(ans1));
+				thread t1 = thread(NumberAdd, 1, times / 4, ref(ans1));
 				thread t2 = thread(NumberAdd, times / 4, times / 2, ref(ans2));
 				thread t3 = thread(NumberAdd, times / 2, 3 * times / 4, ref(ans3));
 				thread t4 = thread(NumberAdd, 3 * times / 4, times, ref(ans4));
@@ -104,7 +80,7 @@ int main()
 				unsigned long long h6 = h4 + h2;
 				unsigned long long h7 = h4 + h3;
 
-				thread t1 = thread(NumberAdd, 0, h1, ref(ans1));
+				thread t1 = thread(NumberAdd, 1, h1, ref(ans1));
 				thread t2 = thread(NumberAdd, h1, h2, ref(ans2));
 				thread t3 = thread(NumberAdd, h2, h3, ref(ans3));
 				thread t4 = thread(NumberAdd, h3, h4, ref(ans4));
