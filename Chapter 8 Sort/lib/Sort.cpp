@@ -258,16 +258,16 @@ void Quick(SeqList L, int low, int high)
 
 void AdjustHeap(SeqList & L, int k, int len)
 {
-    L.data[0] = L.data[k];
+    ElemType temp = L.data[k];
 
-    for(int i = 2*k; i <= len; i *= 2)
+    for(int i = 2*k + 1; i < len; i *= 2)
     {
-        if(i < len && L.data[i] < L.data[i+1])
+        if(i+1 < len && L.data[i] < L.data[i+1])
         {
             i++;
         }
 
-        if(L.data[0] >= L.data[i])
+        if(temp >= L.data[i])
         {
             break;
         }
@@ -278,12 +278,12 @@ void AdjustHeap(SeqList & L, int k, int len)
         }
     }
 
-    L.data[k] = L.data[0];
+    L.data[k] = temp;
 }
 
 void BuildHeap(SeqList & L, int len)
 {
-    for(int i = len / 2; i > 0; i--)
+    for(int i = len / 2 - 1; i >= 0; i--)
     {
         AdjustHeap(L, i, len);
     }
@@ -293,15 +293,15 @@ void Heap(SeqList & L)
 {
     ElemType temp;
 
-    BuildHeap(L, L.length-1);
+    BuildHeap(L, L.length);
 
-    for(int i = L.length-1; i > 1; i--)
+    for(int i = L.length-1; i > 0; i--)
     {
-        temp = L.data[1];
-        L.data[1] = L.data[i];
+        temp = L.data[0];
+        L.data[0] = L.data[i];
         L.data[i] = temp;
 
-        AdjustHeap(L, 1, i-1);
+        AdjustHeap(L, 0, i);
     }
 }
 
@@ -357,7 +357,7 @@ int main()
     Init(L, 10);
     Print(L);
 
-    Merge(L, 0, 9);
+    Heap(L);
     Print(L);
 
     return 0;
