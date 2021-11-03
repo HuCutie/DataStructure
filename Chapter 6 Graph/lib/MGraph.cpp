@@ -129,7 +129,8 @@ void Print(MGraph G)
         {
             if(G.edge[i][j] == 0)
             {
-                cout << " inf ";
+                //cout << " inf ";
+                cout << " ¡Þ ";
             }
             else
             {
@@ -563,7 +564,7 @@ void DFS(MGraph G, SqStack S, int index)
         Pop(S, temp);
         cout << G.Vex[temp] << " ";
 
-        for (int j = FirstNeighbor(G, G.Vex[index]); j >= 0; j = NextNeighbor(G, G.Vex[index], G.Vex[j]))
+        for (int j = FirstNeighbor(G, G.Vex[temp]); j >= 0; j = NextNeighbor(G, G.Vex[temp], G.Vex[j]))
         {
             if(!visited[j])
             {
@@ -574,26 +575,23 @@ void DFS(MGraph G, SqStack S, int index)
     }
 }
 
-int vtime;
-int finishTime[MaxVertexNum];
 int topoSort[MaxVertexNum];
+int topoTime;
 int topoCount;
 
 void TopoDFS(MGraph G, int i)
 {
-    cout << G.Vex[i] << " ";
     visited[i] = true;
 
     for (int j = FirstNeighbor(G, G.Vex[i]); j >= 0; j = NextNeighbor(G, G.Vex[i], G.Vex[j]))
     {
         if (!visited[j])
         {
-            DFS(G, j);
+            TopoDFS(G, j);
         }
     }
 
-    vtime++;
-    finishTime[i] = vtime;
+    topoTime++;
     topoSort[topoCount++] = i;
 }
 
@@ -604,13 +602,13 @@ void TopoDFSTravle(MGraph G)
         visited[i] = false;
     }
 
-    vtime = 0;
+    topoTime = 0;
 
     for(int i = 0; i < G.VexNum; i++)
     {
         if(!visited[i])
         {
-            DFS(G, i);
+            TopoDFS(G, i);
         }
     }
 }
@@ -622,7 +620,7 @@ void TopoSort(MGraph G)
 
     for(int i = topoCount-1; i >= 0; i--)
     {
-        cout << topoSort[i] << " ";
+        cout << G.Vex[topoSort[i]] << " ";
     }
     cout << endl;
 }
