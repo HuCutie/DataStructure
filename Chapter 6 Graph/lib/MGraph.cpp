@@ -445,12 +445,12 @@ bool visited[MaxVertexNum];
 void BFS(MGraph G, SqQueue & Q, int i)
 {
     EnQueue(Q, i);
+    cout << G.Vex[i] << " ";
     visited[i] = true;
 
     while(!QueueEmpty(Q))
     {
         DeQueue(Q, i);
-        cout << G.Vex[i] << " ";
 
         for(int j = FirstNeighbor(G, G.Vex[i]); j >= 0; j = NextNeighbor(G, G.Vex[i], G.Vex[j]))
         {
@@ -572,4 +572,57 @@ void DFS(MGraph G, SqStack S, int index)
             }
         }
     }
+}
+
+int vtime;
+int finishTime[MaxVertexNum];
+int topoSort[MaxVertexNum];
+int topoCount;
+
+void TopoDFS(MGraph G, int i)
+{
+    cout << G.Vex[i] << " ";
+    visited[i] = true;
+
+    for (int j = FirstNeighbor(G, G.Vex[i]); j >= 0; j = NextNeighbor(G, G.Vex[i], G.Vex[j]))
+    {
+        if (!visited[j])
+        {
+            DFS(G, j);
+        }
+    }
+
+    vtime++;
+    finishTime[i] = vtime;
+    topoSort[topoCount++] = i;
+}
+
+void TopoDFSTravle(MGraph G)
+{
+    for(int i = 0; i < G.VexNum; i++)
+    {
+        visited[i] = false;
+    }
+
+    vtime = 0;
+
+    for(int i = 0; i < G.VexNum; i++)
+    {
+        if(!visited[i])
+        {
+            DFS(G, i);
+        }
+    }
+}
+
+void TopoSort(MGraph G)
+{
+    topoCount = 0;
+    TopoDFSTravle(G);
+
+    for(int i = topoCount-1; i >= 0; i--)
+    {
+        cout << topoSort[i] << " ";
+    }
+    cout << endl;
 }

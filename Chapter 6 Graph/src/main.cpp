@@ -5,7 +5,7 @@ int main(int argc, char *argv[])
 	MGraph G;
 	SqStack S;
 
-	G = CreateUDG();
+	G = CreateDG();
 	Print(G);
 
 	DFSTravle(G);
@@ -15,6 +15,9 @@ int main(int argc, char *argv[])
 	cout << endl;
 
 	DFS(G, S, 0);
+	cout << endl;
+
+	TopoSort(G);
 
 	return 0;
 }
